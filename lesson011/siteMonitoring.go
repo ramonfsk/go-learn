@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
@@ -25,7 +26,7 @@ func main() {
 		case 1:
 			startMonitoring()
 		case 2:
-			fmt.Println("\nShowing logs...")
+			showLogs()
 		case 0:
 			fmt.Println("\nExit out program...")
 			os.Exit(0)
@@ -58,7 +59,6 @@ func readOption() int {
 
 func startMonitoring() {
 	fmt.Println("\nMonitoring...")
-	// urls := []string{"https://www.ibm.com", "https://www.poder360.com.br", "https://random-status-code.herokuapp.com"}
 	urls := readUrlsFile()
 
 	for i := 0; i < monitorCount; i++ {
@@ -116,4 +116,15 @@ func writeLog(site string, status bool) {
 	file.WriteString(time.Now().Format("02/01/2006 15:04:05") + " - " + site + " - online: " + strconv.FormatBool(status) + "\n")
 
 	file.Close()
+}
+
+func showLogs() {
+	fmt.Println("\nShowing logs...")
+
+	file, err := ioutil.ReadFile("log.txt")
+	if err != nil {
+		fmt.Println("An error occurred, details here:", err)
+	}
+
+	fmt.Println(string(file))
 }
