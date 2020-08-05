@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
+
+const monitorCount = 3
+const delay = 5
 
 func main() {
 	showIntro()
@@ -52,16 +56,20 @@ func startMonitoring() {
 	fmt.Println("\nMonitoring...")
 	urls := []string{"https://www.ibm.com", "https://www.poder360.com.br", "https://random-status-code.herokuapp.com"}
 
-	for _, url := range urls {
-		getStatusUrl(site)
+	for i := 0; i < monitorCount; i++ {
+		for _, url := range urls {
+			getStatusURL(url)
+		}
+		time.Sleep(delay * time.Second)
+		fmt.Println()
 	}
 }
 
-func getStatusSite(url string) {
+func getStatusURL(url string) {
 	response, _ := http.Get(url)
 	if response.StatusCode == 200 {
-		fmt.Println("Url:", site, "is OK!")
+		fmt.Println("Url:", url, "is OK!")
 	} else {
-		fmt.Println("Url:", site, "isn't OK, status code:", response.StatusCode)
+		fmt.Println("Url:", url, "isn't OK, status code:", response.StatusCode)
 	}
 }
