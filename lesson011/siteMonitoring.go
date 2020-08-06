@@ -89,7 +89,6 @@ func readUrlsFile() []string {
 	var urls []string
 
 	file, err := os.Open("urls.txt")
-	// file, err := ioutil.ReadFile("urls.txt")
 	if err != nil {
 		fmt.Println("An error occurred, details here:", err)
 	}
